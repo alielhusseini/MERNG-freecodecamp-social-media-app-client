@@ -1,6 +1,16 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Home from './components/pages/Home'
+import Login from './components/pages/Login'
+import Register from './components/pages/Register'
+import MenuBar from './components/MenuBar'
+import { Container } from 'semantic-ui-react'
+
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
+
+import 'semantic-ui-css/semantic.min.css'
+import './App.css'
 
 const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql' // requests to this endpoint
@@ -9,9 +19,16 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        MERNG
-      </div>
+      <Router>
+        <Container>
+          <MenuBar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+          </Routes>
+        </Container>
+      </Router>
     </ApolloProvider>
   );
 }
