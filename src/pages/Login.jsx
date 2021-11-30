@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react'
+// import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button } from 'semantic-ui-react'
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from '../utils/useForm';
+import { useGlobalAuthContext } from '../context/authContext'
 
 const LOGIN_USER_MUTATION = gql`
     mutation Login($username: String!, $password: String!) {
@@ -20,11 +21,13 @@ export default function Login() {
     const navigate = useNavigate()
     // const [errors, setErrors] = useState({}) // for error handeling unfortunately it needs to be adjusted... currently it's on pending mode
 
-    const { values, onChange, onSubmit } = useForm(loginUserCallback, {username: '', password: ''}) // the mutation action (addUser) will be triggered in onSubmit, if successful the "update" function will fire
+    const { values, onChange, onSubmit } = useForm(loginUserCallback, {username: '', password: ''}) // the mutation action (addUser) will be triggered in onSubmit function, if successful the "update" function will fire
+    const { login } = useGlobalAuthContext()
 
     const [addUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
         update(proxy, result) { // this function will trigger if the mutation is successful and we are assigning it to the addUser
-            console.log(result)
+            // console.log(result.data.login)
+            login(result.data.login)
             navigate('/', { replace: true })
         },
         onError({ graphQLErrors }) {

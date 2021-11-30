@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useGlobalAuthContext } from '../context/authContext'
 
 export default function MenuBar() {
     const { pathname } = useLocation() // window.location.pathname
     const path = pathname === '/' ? 'home' : pathname.substr(1)
     const [activeItem, setActiveItem] = useState(path)
+    const { user, logout } = useGlobalAuthContext()
 
     const handleItemClick = (e, { name }) => setActiveItem(prev => name)
 
@@ -13,7 +15,23 @@ export default function MenuBar() {
         setActiveItem(prev => path)
     }, [path])
 
-    return (
+    const menuBar = user ? (
+        <Menu pointing secondary size='massive' color='teal'>
+            <Menu.Item
+                name={ user.username }
+                as={NavLink}
+                to="/"
+            />
+            <Menu.Menu position='right'>
+                <Menu.Item
+                    name='logout'
+                    onClick={logout}
+                    as={NavLink}
+                    to="/login"
+                />
+            </Menu.Menu>
+        </Menu>
+    ) : (
         <Menu pointing secondary size='massive' color='teal'>
             <Menu.Item
                 name='home'
@@ -40,4 +58,6 @@ export default function MenuBar() {
             </Menu.Menu>
         </Menu>
     )
- }
+
+    return menuBar
+}
