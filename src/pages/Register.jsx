@@ -1,6 +1,8 @@
 import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Form, Button } from 'semantic-ui-react'
 import { gql, useMutation } from "@apollo/client";
+import { useForm } from '../utils/useForm';
 
 const REGISTER_USER_MUTATION = gql`
     mutation Register($username: String!, $password: String!, $confirmPassword: String!, $email: String!) {
@@ -15,12 +17,15 @@ const REGISTER_USER_MUTATION = gql`
 `
 
 export default function Register() {
-    const [values, setValues] = useState({username: '', email: '', password: '', confirmPassword: ''})
-    const [errors, setErrors] = useState({})
+    const navigate = useNavigate()
+    // const [errors, setErrors] = useState({}) // for error handeling unfortunately it needs to be adjusted... currently it's on pending mode
+
+    const { values, onChange, onSubmit } = useForm(registerUserCallback, {username: '', email: '', password: '', confirmPassword: ''}) // the mutation action (addUser) will be triggered in onSubmit, if successful the "update" function will fire
 
     const [addUser, { loading }] = useMutation(REGISTER_USER_MUTATION, {
-        update(proxy, result) { // this function will trigger if mutation is successful
+        update(proxy, result) { // this function will trigger if the mutation is successful and we are assigning it to the addUser
             console.log(result)
+            navigate('/', { replace: true })
         },
         onError({ graphQLErrors }) {
             console.log(graphQLErrors[0].extensions.exception)
@@ -29,17 +34,7 @@ export default function Register() {
         variables: values // { username: values.username, ... }
     })
 
-    const onSubmit = e => {
-        e.preventDefault()
-        
-        // we already have server side validation, no need for the client's side (bu onError isn't getting our sent data upon errors => client side error must be handled)
-        addUser() // the mutation action will be triggered, if successful the "update" function will fire
-        setValues({username: '', email: '', password: '', confirmPassword: ''})
-    }
-
-    const onChange = e => {
-        setValues(prev => ({...prev, [e.target.name]: e.target.value}))
-    }
+    function registerUserCallback() { addUser() }
 
     return (
         <div className='form-container'>

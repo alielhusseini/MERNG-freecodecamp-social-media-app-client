@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -7,7 +7,11 @@ export default function MenuBar() {
     const path = pathname === '/' ? 'home' : pathname.substr(1)
     const [activeItem, setActiveItem] = useState(path)
 
-    const handleItemClick = (e, { name }) => setActiveItem(name)
+    const handleItemClick = (e, { name }) => setActiveItem(prev => name)
+
+    useEffect(() => {
+        setActiveItem(prev => path)
+    }, [path])
 
     return (
         <Menu pointing secondary size='massive' color='teal'>
@@ -18,7 +22,6 @@ export default function MenuBar() {
                 as={NavLink}
                 to="/"
             />
-            
             <Menu.Menu position='right'>
                 <Menu.Item
                     name='login'
