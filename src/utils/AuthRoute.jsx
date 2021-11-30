@@ -1,16 +1,11 @@
 import React from 'react'
 import { useGlobalAuthContext } from '../context/authContext'
 import { Route, Navigate } from 'react-router-dom'
+import Login from '../pages/Login'
+import Register from '../pages/Register'
 
-export default function AuthRoute({ component: Component, ...rest }) {
+export default function AuthRoute({ path }) {
     const { user } = useGlobalAuthContext()
-
-    return (
-        <Route 
-            {...rest} 
-            render={props =>
-                user ? <Navigate replace to='/' /> : <Component {...props} />
-            }
-        />
-    )
+    if (user) return <Navigate replace to="/" />
+    return ( path === 'login' ? <Login /> : <Register /> )
 }
