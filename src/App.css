@@ -6,3 +6,8 @@
     margin-top: 10px;
     font-family: 'Poppins', sans-serif;
 }
+
+.form-container {
+    width: 400px;
+    margin: auto;
+}

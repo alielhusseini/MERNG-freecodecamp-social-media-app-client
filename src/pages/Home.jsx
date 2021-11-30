@@ -1,10 +1,10 @@
 import React from 'react'
 import { useQuery, gql } from "@apollo/client";
 import { Grid } from 'semantic-ui-react';
-import PostCard from '../PostCard';
+import PostCard from '../components/PostCard';
 
 const FETCH_POSTS_QUERY = gql` # here you write your query
-  query getPosts {
+  query GetPosts {
     getPosts {
       id
       body
