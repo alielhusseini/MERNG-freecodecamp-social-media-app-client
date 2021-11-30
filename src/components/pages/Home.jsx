@@ -1,8 +1,10 @@
 import React from 'react'
 import { useQuery, gql } from "@apollo/client";
+import { Grid } from 'semantic-ui-react';
+import PostCard from '../PostCard';
 
 const FETCH_POSTS_QUERY = gql` # here you write your query
-  query test {
+  query getPosts {
     getPosts {
       id
       body
@@ -18,21 +20,30 @@ const FETCH_POSTS_QUERY = gql` # here you write your query
         createdAt
         body
       }
+      commentCount
     }
   }
 `
 
 export default function Home() {
-    const { loading, error, data } = useQuery(FETCH_POSTS_QUERY ); // fetches the query that is passed, where you'll get access to data, error & loading
+  const { loading, error, data } = useQuery(FETCH_POSTS_QUERY ); // fetches the query that is passed, where you'll get access to data, error & loading
 
-    if (loading) return <p>Loading...</p>
-    if (error) return <p>Error :(</p>
+  const posts = data?.getPosts
 
-    const posts = data?.getPosts
-
-    return posts?.map(({body , id}) => (
-        <div key={id}>
-            <p>{ body }</p>
-        </div>
-    ));
+  return (
+    <Grid columns={3}>
+      <Grid.Row className='page-title'>
+        <h1>Recent Posts</h1>
+      </Grid.Row>
+      <Grid.Row>
+          { loading ? <h1>Loading posts...</h1> : (
+            posts && posts.map(post => (
+              <Grid.Column key={ post.id } style={{ marginBottom: 20 }}>
+                <PostCard { ...post } />
+              </Grid.Column>
+            ))
+          ) }
+      </Grid.Row>
+    </Grid>
+  )
 }

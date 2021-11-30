@@ -1,3 +1,8 @@
-body {
-    background-color: rgb(255, 255, 255);
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+.page-title {
+    display: block !important;
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
 }

@@ -10,17 +10,15 @@ import { Container } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './App.css'
 
-
-
 function App() {
   return (
     <Router>
       <Container>
         <MenuBar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
+          <Route path='/' element={ <Home /> } />
+          <Route path='/login' element={ <Login /> } />
+          <Route path='/register' element={ <Register /> } />
         </Routes>
       </Container>
     </Router>
