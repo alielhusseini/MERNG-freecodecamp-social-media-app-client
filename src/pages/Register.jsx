@@ -1,21 +1,10 @@
 // import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button } from 'semantic-ui-react'
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useForm } from '../utils/useForm';
 import { useGlobalAuthContext } from '../context/authContext'
-
-const REGISTER_USER_MUTATION = gql`
-    mutation Register($username: String!, $password: String!, $confirmPassword: String!, $email: String!) {
-        register(registerInput: {username: $username, password: $password, confirmPassword: $confirmPassword, email: $email}) {
-          id
-          username
-          email 
-          createdAt
-          token  
-        }
-    }
-`
+import { REGISTER_USER_MUTATION } from '../utils/graphql'
 
 export default function Register() {
     const navigate = useNavigate()

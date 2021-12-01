@@ -1,21 +1,10 @@
 // import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button } from 'semantic-ui-react'
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useForm } from '../utils/useForm';
 import { useGlobalAuthContext } from '../context/authContext'
-
-const LOGIN_USER_MUTATION = gql`
-    mutation Login($username: String!, $password: String!) {
-        login(username: $username, password: $password) {
-          id
-          username
-          email 
-          createdAt
-          token  
-        }
-    }
-`
+import { LOGIN_USER_MUTATION } from '../utils/graphql'
 
 export default function Login() {
     const navigate = useNavigate()
@@ -25,7 +14,7 @@ export default function Login() {
     const { login } = useGlobalAuthContext()
 
     const [addUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
-        update(proxy, result) { // this function will trigger if the mutation is successful and we are assigning it to the addUser
+        update(proxy, result) { // this function will trigger if the mutation is successful, and we are assigning it to the addUser
             // console.log(result.data.login)
             login(result.data.login)
             navigate('/', { replace: true })
