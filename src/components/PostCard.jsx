@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Icon, Label, Image, Button } from 'semantic-ui-react'
 import moment from 'moment'
+import { useGlobalAuthContext } from '../context/authContext'
+import LikeButton from '../components/LikeButton'
 
 export default function PostCard({ body, createdAt, id ,username,likeCount, commentCount, likes }) {
-    const likePost = (e) => {
-        console.log('like')
-    }
-    const commentOnPost = (e) => {
-        console.log('comment')
+    const { user } = useGlobalAuthContext()
+
+    const deletePost = (e) => {
+        console.log('delete')
     }
 
     return (
@@ -24,14 +25,16 @@ export default function PostCard({ body, createdAt, id ,username,likeCount, comm
                 <Card.Description>{ body }</Card.Description>
             </Card.Content>
             <Card.Content extra>
-            <Button as='div' labelPosition='right' onClick={likePost}>
-                <Button color='teal' basic><Icon name='heart' /></Button>
-                <Label basic color='teal' pointing='left'>{ likeCount }</Label>
-            </Button>
-            <Button as='div' labelPosition='right' onClick={ commentOnPost }>
+            <LikeButton post={{id, likeCount, likes}} />
+            <Button labelPosition='right' as={Link} to={`/posts/${id}`}>
                 <Button color='blue' basic><Icon name='comments' /></Button>
                 <Label basic color='blue' pointing='left'>{ commentCount }</Label>
             </Button>
+            {  user && user.username === username && (
+                <Button as='div' color="red" floated="right" onClick={deletePost}>
+                    <Icon name='trash' style={{ margin: 0 }}/>
+                </Button>
+            ) }
             </Card.Content>
         </Card>
     )
