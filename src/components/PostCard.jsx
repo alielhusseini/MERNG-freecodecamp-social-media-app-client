@@ -4,13 +4,10 @@ import { Card, Icon, Label, Image, Button } from 'semantic-ui-react'
 import moment from 'moment'
 import { useGlobalAuthContext } from '../context/authContext'
 import LikeButton from '../components/LikeButton'
+import DeleteButton from '../components/DeleteButton'
 
 export default function PostCard({ body, createdAt, id ,username,likeCount, commentCount, likes }) {
     const { user } = useGlobalAuthContext()
-
-    const deletePost = (e) => {
-        console.log('delete')
-    }
 
     return (
         <Card fluid>
@@ -30,11 +27,7 @@ export default function PostCard({ body, createdAt, id ,username,likeCount, comm
                 <Button color='blue' basic><Icon name='comments' /></Button>
                 <Label basic color='blue' pointing='left'>{ commentCount }</Label>
             </Button>
-            {  user && user.username === username && (
-                <Button as='div' color="red" floated="right" onClick={deletePost}>
-                    <Icon name='trash' style={{ margin: 0 }}/>
-                </Button>
-            ) }
+            {  user && user.username === username && ( <DeleteButton postId={ id }/> ) }
             </Card.Content>
         </Card>
     )
