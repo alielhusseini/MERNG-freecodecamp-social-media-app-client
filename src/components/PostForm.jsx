@@ -10,10 +10,10 @@ export default function PostForm() {
     const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         update: (proxy, result) => {
-            const cachedData = proxy.readQuery({ // for re-rendering upon submitting a post, we try and access the CACHE in the apollo that's caching our current data(all the posts), there we'll try to add our new post to the cached data - add the new post to the cache --> all our data that is sitting in the cache is stored in the data variable
+            const cachedData = proxy.readQuery({ // for re-rendering upon submitting a post, we try and access the CACHE in the apollo that's caching our current data(all the posts), there we'll try to add our new post to the cached data - add the new post to the cache --> all our data that is sitting in the cache will be stored in the cachedData variable
                 query: FETCH_POSTS_QUERY // we're trying to the access the getPosts query -> will return the cached data from getPosts
             })
-            // console.log(result.data.createPost) new submitted post
+            // console.log(result.data.createPost) new submitted post (returned Post from the createPost query)
             // console.log(cachedData.getPosts) current cached data
             proxy.writeQuery({ 
                 query: FETCH_POSTS_QUERY, 

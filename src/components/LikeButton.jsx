@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useMutation } from "@apollo/client";
 import { useGlobalAuthContext } from '../context/authContext';
 import { LIKE_POST_MUTATION } from '../utils/graphql'
-import { Button, Label, Icon } from 'semantic-ui-react'
+import { Button, Label, Icon, Popup } from 'semantic-ui-react'
 
 export default function LikeButton({ post : { id, likeCount, likes } }) {
     const [liked, setLiked] = useState(false)
@@ -34,10 +34,16 @@ export default function LikeButton({ post : { id, likeCount, likes } }) {
     )
 
     return (
-        <Button as='div' labelPosition='right' onClick={likePostClick}>
-            { likeButton }
-            <Label basic color='teal' pointing='left'>{ likeCount }</Label>
-        </Button>
+        <Popup
+            content={user ? ( liked ? "Unlike": "Like") : ("Login or Register to like posts")}
+            inverted
+            trigger={
+                <Button as='div' labelPosition='right' onClick={likePostClick}>
+                    { likeButton }
+                    <Label basic color='teal' pointing='left'>{ likeCount }</Label>
+                </Button>
+            }
+        />
     )
 }
 
